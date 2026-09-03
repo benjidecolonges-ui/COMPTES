@@ -1,0 +1,2093 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<meta name="theme-color" content="#0b1220">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Mes Comptes">
+
+<title>Mes Comptes</title>
+
+<style>
+:root{
+  --bg:#f4f6fa;
+  --card:#fff;
+  --text:#111827;
+  --muted:#6b7280;
+  --line:#e5e7eb;
+  --primary:#111827;
+  --green:#16a34a;
+  --red:#dc2626;
+  --orange:#ea580c;
+  --blue:#2563eb;
+  --safe-top:env(safe-area-inset-top);
+  --safe-bottom:env(safe-area-inset-bottom)
+}
+
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",
+  "Segoe UI",sans-serif;
+  color:var(--text)
+}
+
+.app{
+  max-width:720px;
+  margin:auto;
+  padding:calc(14px + var(--safe-top))
+  16px
+  calc(90px + var(--safe-bottom))
+}
+
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px
+}
+
+h1{
+  font-size:28px;
+  margin:0;
+  font-weight:800;
+  letter-spacing:-.7px
+}
+
+.sub{
+  color:var(--muted);
+  font-size:13px;
+  margin-top:3px
+}
+
+.iconbtn{
+  border:0;
+  background:var(--card);
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  box-shadow:0 2px 12px #0000000b;
+  font-size:20px
+}
+
+.card{
+  background:var(--card);
+  border-radius:22px;
+  padding:18px;
+  margin-bottom:14px;
+  box-shadow:0 3px 18px #00000008
+}
+
+.hero{
+  background:var(--primary);
+  color:white;
+  padding:22px
+}
+
+.hero .label{
+  color:#aeb7c6
+}
+
+.hero .total{
+  font-size:38px;
+  font-weight:800;
+  letter-spacing:-1.2px;
+  margin:5px 0 18px
+}
+
+.row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px
+}
+
+.account{
+  border-top:1px solid #ffffff22;
+  padding-top:13px;
+  margin-top:13px
+}
+
+.account:first-of-type{
+  border-top:0;
+  margin-top:0
+}
+
+.account-name{
+  font-weight:700
+}
+
+.account-meta{
+  font-size:12px;
+  color:#aeb7c6;
+  margin-top:3px
+}
+
+.amount{
+  font-weight:800
+}
+
+.amount.good{
+  color:#22c55e
+}
+
+.amount.bad{
+  color:#fb7185
+}
+
+.section-title{
+  font-size:18px;
+  font-weight:800;
+  margin:22px 2px 10px
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px
+}
+
+.stat{
+  background:var(--card);
+  border-radius:18px;
+  padding:15px
+}
+
+.stat .k{
+  font-size:12px;
+  color:var(--muted)
+}
+
+.stat .v{
+  font-size:21px;
+  font-weight:800;
+  margin-top:5px
+}
+
+.progress{
+  height:8px;
+  background:#eef0f3;
+  border-radius:99px;
+  overflow:hidden;
+  margin-top:9px
+}
+
+.progress i{
+  display:block;
+  height:100%;
+  border-radius:99px
+}
+
+.list{
+  display:flex;
+  flex-direction:column;
+  gap:8px
+}
+
+.item{
+  background:var(--card);
+  padding:14px;
+  border-radius:18px;
+  display:flex;
+  align-items:center;
+  gap:12px
+}
+
+.dot{
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  background:#f0f2f5;
+  display:grid;
+  place-items:center;
+  font-size:20px;
+  flex:none
+}
+
+.item-main{
+  min-width:0;
+  flex:1
+}
+
+.item-title{
+  font-weight:700;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis
+}
+
+.item-meta{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:3px
+}
+
+.item-amt{
+  font-weight:800;
+  color:var(--red);
+  white-space:nowrap
+}
+
+.smallbtn{
+  border:0;
+  background:#eef1f5;
+  border-radius:11px;
+  padding:8px 10px;
+  font-size:12px
+}
+
+.empty{
+  text-align:center;
+  color:var(--muted);
+  padding:28px 10px
+}
+
+.primary{
+  width:100%;
+  border:0;
+  background:var(--primary);
+  color:white;
+  border-radius:15px;
+  padding:14px;
+  font-weight:800
+}
+
+.secondary{
+  width:100%;
+  border:0;
+  background:#eef1f5;
+  color:var(--text);
+  border-radius:15px;
+  padding:13px;
+  font-weight:700
+}
+
+.fab{
+  position:fixed;
+  right:18px;
+  bottom:calc(20px + var(--safe-bottom));
+  width:62px;
+  height:62px;
+  border:0;
+  border-radius:21px;
+  background:var(--primary);
+  color:#fff;
+  font-size:29px;
+  box-shadow:0 8px 25px #0003;
+  z-index:10
+}
+
+.overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#0007;
+  z-index:20;
+  align-items:flex-end
+}
+
+.overlay.show{
+  display:flex
+}
+
+.sheet{
+  width:100%;
+  max-width:720px;
+  margin:auto;
+  background:var(--card);
+  border-radius:26px 26px 0 0;
+  padding:18px 18px calc(20px + var(--safe-bottom));
+  max-height:92vh;
+  overflow:auto
+}
+
+.handle{
+  width:42px;
+  height:5px;
+  background:#d1d5db;
+  border-radius:99px;
+  margin:0 auto 17px
+}
+
+h2{
+  font-size:21px;
+  margin:0 0 15px
+}
+
+.field{
+  margin:12px 0
+}
+
+.field label{
+  display:block;
+  font-size:12px;
+  font-weight:700;
+  color:var(--muted);
+  margin:0 0 6px
+}
+
+.field input,
+.field select{
+  width:100%;
+  border:1px solid var(--line);
+  background:#fafafa;
+  border-radius:13px;
+  padding:13px;
+  outline:none
+}
+
+.field input:focus,
+.field select:focus{
+  border-color:#9ca3af;
+  background:white
+}
+
+.two{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px
+}
+
+.actions{
+  display:flex;
+  gap:9px;
+  margin-top:16px
+}
+
+.actions>*{
+  flex:1
+}
+
+.tabs{
+  display:flex;
+  background:#e9edf2;
+  padding:4px;
+  border-radius:14px;
+  margin-bottom:14px
+}
+
+.tabs button{
+  flex:1;
+  border:0;
+  background:transparent;
+  padding:9px;
+  border-radius:11px;
+  font-weight:700;
+  color:var(--muted)
+}
+
+.tabs button.active{
+  background:white;
+  color:var(--text);
+  box-shadow:0 1px 5px #00000010
+}
+
+.note{
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.45;
+  background:#f7f8fa;
+  border-radius:13px;
+  padding:11px
+}
+
+.danger{
+  color:var(--red)
+}
+
+.positive{
+  color:var(--green)
+}
+
+.category-row{
+  display:grid;
+  grid-template-columns:1fr 110px 36px;
+  gap:7px;
+  align-items:center;
+  margin-bottom:8px
+}
+
+.category-row input{
+  width:100%;
+  padding:10px;
+  border:1px solid var(--line);
+  border-radius:10px
+}
+
+.delete-cat{
+  border:0;
+  background:#fee2e2;
+  color:var(--red);
+  border-radius:10px;
+  height:36px
+}
+
+.footer{
+  text-align:center;
+  color:#9ca3af;
+  font-size:11px;
+  margin:24px 0
+}
+
+@media(min-width:650px){
+  .fab{
+    right:calc(50% - 340px)
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+
+<div>
+<h1>Mes comptes</h1>
+<div class="sub" id="today"></div>
+</div>
+
+<button class="iconbtn" onclick="openSettings()">⚙️</button>
+
+</header>
+
+
+<section class="card hero">
+
+<div class="label">
+Solde global
+</div>
+
+<div class="total" id="globalBalance">
+0,00 €
+</div>
+
+<div id="accounts"></div>
+
+</section>
+
+
+<div class="grid">
+
+<div class="stat">
+<div class="k">
+Dépenses ce mois
+</div>
+
+<div class="v" id="monthSpend">
+0 €
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="k">
+Budget restant
+</div>
+
+<div class="v" id="monthBudget">
+0 €
+</div>
+
+</div>
+
+</div>
+
+
+<div class="section-title">
+Budgets du mois
+</div>
+
+<section class="card" id="budgets"></section>
+
+
+<div class="section-title">
+Dernières dépenses
+</div>
+
+<div class="list" id="expenses"></div>
+
+
+<div class="footer">
+Données enregistrées uniquement sur cet appareil •
+Pense à faire une sauvegarde régulièrement.
+</div>
+
+</div>
+
+
+<button class="fab" onclick="openExpense()">
+＋
+</button>
+
+
+<!-- AJOUT DEPENSE -->
+
+<div class="overlay" id="expenseModal">
+
+<div class="sheet">
+
+<div class="handle"></div>
+
+<h2>
+Ajouter une dépense
+</h2>
+
+
+<div class="field">
+
+<label>
+MONTANT
+</label>
+
+<input
+id="eAmount"
+type="number"
+step="0.01"
+min="0"
+inputmode="decimal"
+placeholder="0,00"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+DESCRIPTION
+</label>
+
+<input
+id="eDesc"
+type="text"
+placeholder="Ex. courses, restaurant..."
+>
+
+</div>
+
+
+<div class="two">
+
+<div class="field">
+
+<label>
+COMPTE
+</label>
+
+<select id="eAccount"></select>
+
+</div>
+
+
+<div class="field">
+
+<label>
+CATÉGORIE
+</label>
+
+<select id="eCategory"></select>
+
+</div>
+
+</div>
+
+
+<div class="field">
+
+<label>
+DATE
+</label>
+
+<input
+id="eDate"
+type="date"
+>
+
+</div>
+
+
+<div class="actions">
+
+<button
+class="secondary"
+onclick="closeModals()"
+>
+Annuler
+</button>
+
+<button
+class="primary"
+onclick="saveExpense()"
+>
+Enregistrer
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- PARAMETRES -->
+
+<div class="overlay" id="settingsModal">
+
+<div class="sheet">
+
+<div class="handle"></div>
+
+<h2>
+Paramètres
+</h2>
+
+
+<div class="tabs">
+
+<button
+id="tabAccounts"
+class="active"
+onclick="showTab('accounts')"
+>
+Comptes
+</button>
+
+<button
+id="tabBudget"
+onclick="showTab('budget')"
+>
+Budgets
+</button>
+
+<button
+id="tabData"
+onclick="showTab('data')"
+>
+Données
+</button>
+
+</div>
+
+
+<!-- COMPTES -->
+
+<div id="settingsAccounts">
+
+<div id="accountSettings"></div>
+
+<div class="note">
+
+Tu peux entrer directement un solde négatif,
+par exemple <b>-150 €</b>.
+
+Les limites de découvert sont suivies séparément.
+
+</div>
+
+</div>
+
+
+<!-- BUDGET -->
+
+<div id="settingsBudget" style="display:none">
+
+<div class="note">
+
+Définis ici ton budget mensuel pour chaque catégorie.
+Le suivi se met à jour automatiquement.
+
+</div>
+
+<div
+id="categorySettings"
+style="margin-top:12px"
+></div>
+
+
+<button
+class="secondary"
+onclick="addCategory()"
+>
+＋ Ajouter une catégorie
+</button>
+
+</div>
+
+
+<!-- DONNEES -->
+
+<div id="settingsData" style="display:none">
+
+<p class="note">
+
+Tes données restent dans le stockage local de Safari.
+
+Fais une exportation pour conserver une copie
+de tes comptes et dépenses.
+
+</p>
+
+
+<div class="actions">
+
+<button
+class="secondary"
+onclick="exportData()"
+>
+Exporter
+</button>
+
+<button
+class="secondary"
+onclick="document.getElementById('importFile').click()"
+>
+Importer
+</button>
+
+</div>
+
+
+<input
+id="importFile"
+type="file"
+accept=".json,application/json"
+style="display:none"
+onchange="importData(event)"
+>
+
+
+<button
+class="secondary"
+style="margin-top:9px"
+onclick="resetAll()"
+>
+Réinitialiser toutes les données
+</button>
+
+</div>
+
+
+<div class="actions">
+
+<button
+class="primary"
+onclick="saveSettings()"
+>
+Fermer et enregistrer
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+const KEY="mes_comptes_v1";
+
+
+const defaultData={
+
+accounts:[
+
+{
+id:"perso",
+name:"BNP Perso",
+balance:0,
+overdraft:400
+},
+
+{
+id:"bouffe",
+name:"BNP Bouffe",
+balance:0,
+overdraft:100
+}
+
+],
+
+
+categories:[
+
+{
+id:"courses",
+name:"Courses",
+budget:300,
+icon:"🛒"
+},
+
+{
+id:"loyer",
+name:"Loyer / logement",
+budget:0,
+icon:"🏠"
+},
+
+{
+id:"transport",
+name:"Transport",
+budget:100,
+icon:"🚆"
+},
+
+{
+id:"restaurants",
+name:"Restaurants",
+budget:150,
+icon:"🍽️"
+},
+
+{
+id:"loisirs",
+name:"Loisirs",
+budget:100,
+icon:"🎮"
+},
+
+{
+id:"sante",
+name:"Santé",
+budget:50,
+icon:"🩺"
+},
+
+{
+id:"abonnements",
+name:"Abonnements",
+budget:50,
+icon:"📱"
+},
+
+{
+id:"autre",
+name:"Autre",
+budget:100,
+icon:"📦"
+}
+
+],
+
+
+expenses:[]
+
+};
+
+
+let data=load();
+
+
+function load(){
+
+try{
+
+const x=JSON.parse(
+localStorage.getItem(KEY)
+);
+
+if(
+x &&
+x.accounts &&
+x.categories &&
+x.expenses
+)
+return x;
+
+}catch(e){}
+
+return structuredClone(defaultData);
+
+}
+
+
+function save(){
+
+localStorage.setItem(
+KEY,
+JSON.stringify(data)
+);
+
+render();
+
+}
+
+
+function euro(n){
+
+return new Intl.NumberFormat(
+"fr-BE",
+{
+style:"currency",
+currency:"EUR"
+}
+).format(n);
+
+}
+
+
+function dateFr(s){
+
+return new Date(
+s+"T12:00:00"
+).toLocaleDateString(
+"fr-BE",
+{
+day:"2-digit",
+month:"2-digit",
+year:"numeric"
+}
+);
+
+}
+
+
+function monthKey(
+d=new Date()
+){
+
+return d.getFullYear()
++
+"-"
++
+String(
+d.getMonth()+1
+).padStart(2,"0");
+
+}
+
+
+function render(){
+
+const total=
+data.accounts.reduce(
+(s,a)=>s+a.balance,
+0
+);
+
+
+const gb=
+document.getElementById(
+"globalBalance"
+);
+
+
+gb.textContent=
+euro(total);
+
+
+gb.style.color=
+total<0
+?
+"#fb7185"
+:
+"white";
+
+
+document.getElementById(
+"today"
+).textContent=
+new Date().toLocaleDateString(
+"fr-BE",
+{
+weekday:"long",
+day:"numeric",
+month:"long"
+}
+);
+
+
+document.getElementById(
+"accounts"
+).innerHTML=
+data.accounts.map(
+a=>{
+
+const used=
+a.balance<0
+?
+Math.abs(a.balance)
+:
+0;
+
+const pct=
+Math.min(
+100,
+used/a.overdraft*100
+);
+
+
+const status=
+a.balance<0
+?
+`<span class="amount bad">
+Découvert ${euro(Math.abs(a.balance))}
+</span>`
+:
+`<span class="amount">
+${euro(a.balance)}
+</span>`;
+
+
+return `
+
+<div class="account row">
+
+<div>
+
+<div class="account-name">
+${esc(a.name)}
+</div>
+
+<div class="account-meta">
+
+Limite découvert :
+${euro(a.overdraft)}
+
+</div>
+
+</div>
+
+<div>
+${status}
+</div>
+
+</div>
+
+${
+a.balance<0
+?
+`
+<div class="progress">
+
+<i
+style="
+width:${pct}%;
+background:
+${pct>=90
+?
+"#ef4444"
+:
+"#f59e0b"}
+"
+></i>
+
+</div>
+`
+:
+""
+}
+
+`;
+
+}
+
+).join("");
+
+
+const ms=
+data.expenses
+.filter(
+e=>e.date.startsWith(
+monthKey()
+)
+)
+.reduce(
+(s,e)=>s+Number(e.amount),
+0
+);
+
+
+const budget=
+data.categories
+.reduce(
+(s,c)=>s+Number(c.budget||0),
+0
+);
+
+
+document.getElementById(
+"monthSpend"
+).textContent=euro(ms);
+
+
+document.getElementById(
+"monthBudget"
+).textContent=euro(
+budget-ms
+);
+
+
+document.getElementById(
+"monthBudget"
+).className=
+"v "
++
+(
+budget-ms<0
+?
+"danger"
+:
+"positive"
+);
+
+
+document.getElementById(
+"budgets"
+).innerHTML=
+data.categories.map(
+c=>{
+
+const spent=
+data.expenses
+.filter(
+e=>
+e.date.startsWith(monthKey())
+&&
+e.category===c.id
+)
+.reduce(
+(s,e)=>s+Number(e.amount),
+0
+);
+
+
+const b=
+Number(c.budget||0);
+
+
+const pct=
+b
+?
+Math.min(
+100,
+spent/b*100
+)
+:
+0;
+
+
+return `
+
+<div style="margin-bottom:14px">
+
+<div class="row">
+
+<span>
+
+<b>
+${c.icon}
+${esc(c.name)}
+</b>
+
+</span>
+
+<span>
+
+${euro(spent)}
+/
+${euro(b)}
+
+</span>
+
+</div>
+
+
+<div class="progress">
+
+<i
+
+style="
+width:${pct}%;
+
+background:
+${
+pct>=100
+?
+"#ef4444"
+:
+pct>=80
+?
+"#f59e0b"
+:
+"#22c55e"
+}
+"
+
+></i>
+
+</div>
+
+</div>
+
+`;
+
+}
+
+).join("");
+
+
+const recent=
+[
+...data.expenses
+]
+.sort(
+(a,b)=>
+b.date.localeCompare(a.date)
+||
+b.id-a.id
+)
+.slice(0,12);
+
+
+document.getElementById(
+"expenses"
+).innerHTML=
+
+recent.length
+
+?
+
+recent.map(
+e=>{
+
+const c=
+data.categories.find(
+x=>x.id===e.category
+)
+||
+{
+name:"Autre",
+icon:"📦"
+};
+
+
+const a=
+data.accounts.find(
+x=>x.id===e.account
+)
+||
+{
+name:"Compte"
+};
+
+
+return `
+
+<div class="item">
+
+<div class="dot">
+${c.icon}
+</div>
+
+
+<div class="item-main">
+
+<div class="item-title">
+
+${esc(
+e.desc||c.name
+)}
+
+</div>
+
+
+<div class="item-meta">
+
+${dateFr(e.date)}
+•
+${esc(a.name)}
+•
+${esc(c.name)}
+
+</div>
+
+</div>
+
+
+<div class="item-amt">
+
+-${euro(
+Number(e.amount)
+)}
+
+</div>
+
+
+<button
+class="smallbtn"
+onclick="deleteExpense(${e.id})"
+>
+×
+</button>
+
+</div>
+
+`;
+
+}
+).join("")
+
+:
+
+`
+<div class="card empty">
+
+Aucune dépense enregistrée.
+
+<br>
+
+Appuie sur ＋ pour commencer.
+
+</div>
+`;
+
+}
+
+
+function esc(s){
+
+return String(
+s??""
+).replace(
+/[&<>"']/g,
+m=>
+({
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+}[m])
+);
+
+}
+
+
+function openExpense(){
+
+document
+.getElementById("expenseModal")
+.classList.add("show");
+
+
+document
+.getElementById("eDate")
+.value=
+new Date()
+.toISOString()
+.slice(0,10);
+
+
+document
+.getElementById("eAccount")
+.innerHTML=
+data.accounts.map(
+a=>
+`
+<option value="${a.id}">
+${esc(a.name)}
+</option>
+`
+).join("");
+
+
+document
+.getElementById("eCategory")
+.innerHTML=
+data.categories.map(
+c=>
+`
+<option value="${c.id}">
+${c.icon}
+${esc(c.name)}
+</option>
+`
+).join("");
+
+
+document
+.getElementById("eAmount")
+.focus();
+
+}
+
+
+function closeModals(){
+
+document
+.querySelectorAll(".overlay")
+.forEach(
+x=>x.classList.remove("show")
+);
+
+}
+
+
+function saveExpense(){
+
+const amount=
+Number(
+document.getElementById(
+"eAmount"
+).value
+);
+
+
+const desc=
+document.getElementById(
+"eDesc"
+).value.trim();
+
+
+const account=
+document.getElementById(
+"eAccount"
+).value;
+
+
+const category=
+document.getElementById(
+"eCategory"
+).value;
+
+
+const date=
+document.getElementById(
+"eDate"
+).value;
+
+
+if(
+!amount ||
+amount<0 ||
+!date
+){
+
+alert(
+"Entre un montant et une date valides."
+);
+
+return;
+
+}
+
+
+data.expenses.push({
+
+id:Date.now(),
+
+amount,
+
+desc,
+
+account,
+
+category,
+
+date
+
+});
+
+
+const a=
+data.accounts.find(
+x=>x.id===account
+);
+
+
+if(a)
+a.balance-=amount;
+
+
+document.getElementById(
+"eAmount"
+).value="";
+
+
+document.getElementById(
+"eDesc"
+).value="";
+
+
+closeModals();
+
+save();
+
+}
+
+
+function deleteExpense(id){
+
+const e=
+data.expenses.find(
+x=>x.id===id
+);
+
+
+if(!e)return;
+
+
+if(
+!confirm(
+"Supprimer cette dépense ? Le montant sera recrédité sur le compte."
+)
+)return;
+
+
+const a=
+data.accounts.find(
+x=>x.id===e.account
+);
+
+
+if(a)
+a.balance+=Number(e.amount);
+
+
+data.expenses=
+data.expenses.filter(
+x=>x.id!==id
+);
+
+
+save();
+
+}
+
+
+function openSettings(){
+
+document
+.getElementById("settingsModal")
+.classList.add("show");
+
+
+showTab("accounts");
+
+
+document
+.getElementById("accountSettings")
+.innerHTML=
+
+data.accounts.map(
+(a,i)=>
+
+`
+
+<div
+class="card"
+style="
+box-shadow:none;
+background:#f8f9fb;
+padding:14px
+"
+>
+
+<div class="row">
+
+<b>
+${esc(a.name)}
+</b>
+
+<span
+style="
+font-size:12px;
+color:var(--muted)
+"
+>
+Compte ${i+1}
+</span>
+
+</div>
+
+
+<div class="two">
+
+<div class="field">
+
+<label>
+SOLDE ACTUEL (€)
+</label>
+
+<input
+
+class="sBalance"
+
+data-id="${a.id}"
+
+type="number"
+
+step="0.01"
+
+value="${a.balance}"
+
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+DÉCOUVERT MAX (€)
+</label>
+
+<input
+
+class="sOverdraft"
+
+data-id="${a.id}"
+
+type="number"
+
+min="0"
+
+step="1"
+
+value="${a.overdraft}"
+
+>
+
+</div>
+
+</div>
+
+</div>
+
+`
+
+).join("");
+
+
+renderCategorySettings();
+
+}
+
+
+function renderCategorySettings(){
+
+document
+.getElementById(
+"categorySettings"
+)
+.innerHTML=
+
+data.categories.map(
+c=>
+
+`
+
+<div class="category-row">
+
+<input
+
+class="cName"
+
+data-id="${c.id}"
+
+value="${esc(
+c.icon+" "+c.name
+)}"
+
+>
+
+<input
+
+class="cBudget"
+
+data-id="${c.id}"
+
+type="number"
+
+min="0"
+
+step="10"
+
+value="${c.budget}"
+
+>
+
+<button
+
+class="delete-cat"
+
+onclick="removeCategory('${c.id}')"
+
+>
+×
+</button>
+
+</div>
+
+`
+
+).join("");
+
+}
+
+
+function addCategory(){
+
+const id=
+"cat_"+Date.now();
+
+
+data.categories.push({
+
+id,
+
+name:"Nouvelle catégorie",
+
+budget:0,
+
+icon:"📁"
+
+});
+
+
+renderCategorySettings();
+
+}
+
+
+function removeCategory(id){
+
+if(
+data.categories.length<=1
+)
+return;
+
+
+if(
+data.expenses.some(
+e=>e.category===id
+)
+){
+
+alert(
+"Cette catégorie contient des dépenses. Supprime-les ou change leur catégorie avant de la supprimer."
+);
+
+return;
+
+}
+
+
+data.categories=
+data.categories.filter(
+c=>c.id!==id
+);
+
+
+renderCategorySettings();
+
+}
+
+
+function saveSettings(){
+
+document
+.querySelectorAll(".sBalance")
+.forEach(
+x=>{
+
+const a=
+data.accounts.find(
+a=>a.id===x.dataset.id
+);
+
+
+if(a)
+a.balance=
+Number(x.value)||0;
+
+}
+);
+
+
+document
+.querySelectorAll(".sOverdraft")
+.forEach(
+x=>{
+
+const a=
+data.accounts.find(
+a=>a.id===x.dataset.id
+);
+
+
+if(a)
+a.overdraft=
+Math.max(
+0,
+Number(x.value)||0
+);
+
+}
+);
+
+
+document
+.querySelectorAll(".cName")
+.forEach(
+x=>{
+
+const c=
+data.categories.find(
+c=>c.id===x.dataset.id
+);
+
+
+if(c){
+
+let v=
+x.value.trim();
+
+
+let icon=
+v.match(
+/^(\S+)\s+/
+)?.[1]
+||
+"📁";
+
+
+c.icon=icon;
+
+
+c.name=
+v.replace(
+/^(\S+)\s+/,
+""
+)
+||
+"Catégorie";
+
+}
+
+}
+);
+
+
+document
+.querySelectorAll(".cBudget")
+.forEach(
+x=>{
+
+const c=
+data.categories.find(
+c=>c.id===x.dataset.id
+);
+
+
+if(c)
+c.budget=
+Math.max(
+0,
+Number(x.value)||0
+);
+
+}
+);
+
+
+closeModals();
+
+save();
+
+}
+
+
+function showTab(t){
+
+[
+"accounts",
+"budget",
+"data"
+].forEach(
+x=>{
+
+document
+.getElementById(
+"settings"
++
+x.charAt(0).toUpperCase()
++
+x.slice(1)
+)
+.style.display=
+t===x
+?
+"block"
+:
+"none";
+
+
+document
+.getElementById(
+"tab"
++
+x.charAt(0).toUpperCase()
++
+x.slice(1)
+)
+.classList.toggle(
+"active",
+t===x
+);
+
+}
+);
+
+}
+
+
+function exportData(){
+
+const blob=
+new Blob(
+[
+JSON.stringify(
+data,
+null,
+2
+)
+],
+{
+type:"application/json"
+}
+);
+
+
+const a=
+document.createElement("a");
+
+
+a.href=
+URL.createObjectURL(
+blob
+);
+
+
+a.download=
+"mes-comptes-sauvegarde.json";
+
+
+a.click();
+
+
+URL.revokeObjectURL(
+a.href
+);
+
+}
+
+
+function importData(ev){
+
+const file=
+ev.target.files[0];
+
+
+if(!file)return;
+
+
+const r=
+new FileReader();
+
+
+r.onload=()=>{
+
+try{
+
+const x=
+JSON.parse(
+r.result
+);
+
+
+if(
+!x.accounts||
+!x.categories||
+!x.expenses
+)
+throw Error();
+
+
+data=x;
+
+save();
+
+alert(
+"Sauvegarde importée."
+);
+
+openSettings();
+
+}
+catch(e){
+
+alert(
+"Fichier de sauvegarde invalide."
+);
+
+}
+
+};
+
+
+r.readAsText(file);
+
+
+ev.target.value="";
+
+}
+
+
+function resetAll(){
+
+if(
+confirm(
+"Tout effacer : comptes, dépenses et budgets ? Cette action est irréversible."
+)
+){
+
+localStorage.removeItem(
+KEY
+);
+
+
+data=
+structuredClone(
+defaultData
+);
+
+
+closeModals();
+
+render();
+
+}
+
+}
+
+
+render();
+
+</script>
+
+</body>
+</html>
